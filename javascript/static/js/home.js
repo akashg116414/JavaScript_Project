@@ -89,3 +89,73 @@ function rpsFrontEnd(humanImageChoice, botImageChoice, finalMessage){
     document.getElementById('flex-box-rps-div').appendChild(botDiv);
 
 }
+
+// Challenge 4: Change the Color of All Buttons!
+
+var all_buttons = document.getElementsByTagName('button')
+console.log(all_buttons)
+
+copy_all_button = [];
+ for(let i=0; i<all_buttons.length; i++)
+ {
+     copy_all_button.push(all_buttons[i].classList[1]);
+ }
+ console.log(copy_all_button)
+
+ function buttonColorChange(buttonColour){
+     if (buttonColour.value === 'red')
+     {
+        redButtonColor();
+     }
+     else if (buttonColour.value === 'green')
+     {
+        greenButtonColor();
+     }
+     else if (buttonColour.value === 'random')
+     {
+        randomButtonColor();
+     }
+     else if (buttonColour.value === 'reset')
+     {
+        resetButtonColor();
+     }
+ }
+
+ function redButtonColor(){
+    for(let i=0; i<all_buttons.length; i++)
+    {
+        all_buttons[i].classList.remove(all_buttons[i].classList[1]);
+        all_buttons[i].classList.add('btn-danger');
+    }
+ }
+ function greenButtonColor(){
+    for(let i=0; i<all_buttons.length; i++)
+    {
+        all_buttons[i].classList.remove(all_buttons[i].classList[1]);
+        all_buttons[i].classList.add('btn-success');
+    }
+ }
+
+ function randomButtonColor(){
+    for(let i=0; i<all_buttons.length; i++)
+    {
+        all_buttons[i].classList.remove(all_buttons[i].classList[1]);
+        all_buttons[i].classList.add(randomColor(randToColorInt()));
+    }
+ }
+
+ function randToColorInt(){
+    return Math.floor(Math.random() * 4);
+ }
+
+ function randomColor(number){
+     return ["btn-primary", "btn-danger", "btn-success", "btn-warning"][number]
+ }
+
+ function resetButtonColor(){
+    for(let i=0; i<all_buttons.length; i++)
+    {
+        all_buttons[i].classList.remove(all_buttons[i].classList[1]);
+        all_buttons[i].classList.add(copy_all_button[i]);
+    }
+ }
