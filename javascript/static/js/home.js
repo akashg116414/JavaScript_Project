@@ -259,21 +259,26 @@ function showScore(activePlayer){
     }
 
 }
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
+}
 
-function blackjackStand(){
-    if(blackjackGame['turnsOver'] === false){
-        blackjackGame['isStand'] = true;
+async function blackjackStand(){
+    blackjackGame['isStand'] = true;
+    while(DEALER['score'] < 16 && blackjackGame['isStand'] === true){
+
         var card = randomCards();
         showCards(DEALER,card);
         updateScore(card, DEALER);
         showScore(DEALER);
-
-        if(DEALER['score'] > 15){
-            blackjackGame['turnsOver'] = true;
-            let winner = computeWinner();
-            showResults(winner);
-        }
+        await sleep(1000);
     }
+
+        blackjackGame['turnsOver'] = true;
+        let winner = computeWinner();
+        showResults(winner);
+
+
 
 }
 
@@ -303,23 +308,24 @@ function computeWinner(){
 
 function showResults(winner){
     let message, messageColor;
-    if (winner === YOU){
-        document.querySelector("#wins").textContent = blackjackGame['wins'];
-        message = "You Won!"
-        messageColor = 'green'
-        winSound.play();
-    }else if (winner === DEALER){
-        document.querySelector("#losses").textContent = blackjackGame['losses'];
-        message = "You Loss!"
-        messageColor = 'red'
-        lossSound.play();
-    }else{
-        document.querySelector("#drew").textContent = blackjackGame['drew'];
-        message = "You Drew!"
-        messageColor = 'black'
+    if (blackjackGame['turnsOver'] === true){
+        if (winner === YOU){
+            document.querySelector("#wins").textContent = blackjackGame['wins'];
+            message = "You Won!"
+            messageColor = 'green'
+            winSound.play();
+        }else if (winner === DEALER){
+            document.querySelector("#losses").textContent = blackjackGame['losses'];
+            message = "You Loss!"
+            messageColor = 'red'
+            lossSound.play();
+        }else{
+            document.querySelector("#drew").textContent = blackjackGame['drew'];
+            message = "You Drew!"
+            messageColor = 'black'
+        }
+
+        document.querySelector("#blackjack-result").textContent = message;
+        document.querySelector("#blackjack-result").style.color = messageColor;
     }
-
-    document.querySelector("#blackjack-result").textContent = message;
-    document.querySelector("#blackjack-result").style.color = messageColor;
-
 }
